@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+checkpoint/*.pt
+.vs/
+*.suo
+*.user
