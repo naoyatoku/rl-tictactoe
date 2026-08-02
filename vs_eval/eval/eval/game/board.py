@@ -8,9 +8,10 @@ def init_board():
     return np.zeros((N, N), dtype=np.int8)
 
 
+#おいてもいい場所を列挙する。
 def valid_moves(board):
-    flat = board.flatten()
-    return [i for i in range(ACTION_SIZE) if flat[i] == 0]
+    flat = board.flatten()          #3×3の配列を1字配列に変換
+    return [i for i in range(ACTION_SIZE) if flat[i] == 0]      #0のインデックスを詰めた配列を作って返す・・・すごいねこれ
 
 
 def valid_moves_mask(board):
@@ -27,20 +28,20 @@ def next_state(board, player, action):
 
 
 def _lines(board):
-    rows = [board[i, :] for i in range(N)]
-    cols = [board[:, i] for i in range(N)]
-    diags = [np.diag(board), np.diag(np.fliplr(board))]
-    return rows + cols + diags
+    rows = [board[i, :] for i in range(N)]                  #横の「行」のパターンを全部取り出す
+    cols = [board[:, i] for i in range(N)]                  #縦の「列」のパターンを全部取り出す
+    diags = [np.diag(board), np.diag(np.fliplr(board))]     #対角左上→右下、右上→左下へのパターンを取り出す
+    return rows + cols + diags                              #全部のパターンをつなげて返す。
 
 
 def winner(board):
-    for line in _lines(board):
-        s = int(line.sum())
+    for line in _lines(board):                              #_linesは、縦、横、斜めの場所の数値配列を全部取り出す
+        s = int(line.sum())                                 #全部の要素を足す。（1が全部ならN、-1が全部なら-Nになる)
         if s == N:
-            return 1
-        if s == -N:
+            return 1                                        #プレイヤー1が全部そろっている
+        if s == -N:                                         #プレイヤー-1が全部そろっている。
             return -1
-    return 0
+    return 0                                                #そろってない
 
 
 def terminal_value(board, player):

@@ -25,7 +25,8 @@ def main():
 
     human = None
     while human not in ("1", "2"):
-        human = input("先手(X)=1, 後手(O)=2 を選んでください: ").strip()
+#        human = input("先手(X)=1, 後手(O)=2 を選んでください: ").strip()
+        human="1"
     human_player = 1 if human == "1" else -1
 
     board = bd.init_board()
