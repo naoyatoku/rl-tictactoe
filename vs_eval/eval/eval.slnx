@@ -2,4 +2,7 @@
   <Project Path="eval/eval.pyproj" Type="888888a0-9f3d-457c-b088-3a5042f75d52" Id="c282188b-72be-498a-95f0-728361465ddb">
     <Build Project="false" />
   </Project>
+  <Project Path="lean/lean.pyproj" Type="888888a0-9f3d-457c-b088-3a5042f75d52" Id="a2f7497d-ac85-4f3c-9798-173751cf53fb">
+    <Build Project="false" />
+  </Project>
 </Solution>

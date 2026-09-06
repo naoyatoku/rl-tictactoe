@@ -3,6 +3,9 @@ import sys
 
 import numpy as np
 import torch
+#
+import random
+
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -32,36 +35,34 @@ def main():
     board = bd.init_board()
     player = 1
     mcts = MCTS(net, DEVICE, n_sims=200)
-
     print(bd.render(board))
     while True:
         if player == human_player:
+            print(f"---------- [P] ----------[{player}]")
             valid = bd.valid_moves(board)
-            move = None
-            while move not in valid:
-                try:
-                    move = int(input(f"手を選んでください (0-8, 空きマス={valid}): ").strip())
-                except ValueError:
-                    continue
+            move = random.choice(valid)
         else:
-            pi = mcts.get_action_probs(board, player, temp=0)
+            print(f"---------- [AI] ---------[{player}]")
+            pi = mcts.get_action_probs(board, player, temp=0)       #これがMTCSで手を見つける
             move = int(np.argmax(pi))
             print(f"AI: {move}")
 
         board = bd.next_state(board, player, move)
         print(bd.render(board))
 
-        r = bd.terminal_value(board, player)
-        if r != 0:
-            if abs(r - 1e-4) < 1e-6:
-                print("引き分け")
-            elif player == human_player:
-                print("あなたの勝ち！")
+        #勝負がついている場合は、自分勝ち = 1 , 自分負け = -1 , もう置く場所がない = e^-4(ひきわけ)  , まだ勝負ついてない = 0
+        r = bd.winner(board)
+#        r = bd.terminal_value(board)
+        if r != 0:                                  #なんらかしらの勝負がついた
+            if r== human_player:
+                print("you win!")
             else:
-                print("AIの勝ち")
+                print("AI win!")
             break
-        player = -player
-
-
+        else:                                       #勝負はついてないが、盤面がいっぱいで置く場所がない場合
+            if len(bd.valid_moves(board)) == 0:
+                print("draw!")
+                break
+        player = -player                            #   1 と -1を入れ替わる
 if __name__ == "__main__":
     main()
