@@ -1,5 +1,7 @@
 __pycache__/
 *.pyc
+**/checkpoint/*.pt
+!checkpoint/net.pt
 .vs/
 *.suo
 *.user
